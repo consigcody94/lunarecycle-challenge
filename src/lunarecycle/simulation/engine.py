@@ -12,20 +12,18 @@ import json
 
 from lunarecycle.waste.streams import WasteStream, WasteItem, WasteCategory
 from lunarecycle.waste.inventory import WasteInventory
-from lunarecycle.recycling.systems import RecyclingSystem, RecyclingTechnology, create_system
-from lunarecycle.recycling.processes import ProcessingResult, ProductType
+from lunarecycle.recycling.systems import RecyclingSystem, create_system
+from lunarecycle.recycling.processes import ProcessingResult
 from lunarecycle.environment.lunar import (
-    LunarEnvironment,
-    MarsEnvironment,
     EnvironmentParameters,
     get_environment,
-    Location,
 )
 
 
 @dataclass
 class SimulationConfig:
     """Configuration for a simulation run."""
+
     # Mission parameters
     crew_size: int = 4
     mission_duration_days: int = 365
@@ -59,6 +57,7 @@ class SimulationConfig:
 @dataclass
 class DailyMetrics:
     """Metrics for a single simulation day."""
+
     day: int
     date: datetime
     waste_generated_kg: float
@@ -72,6 +71,7 @@ class DailyMetrics:
 @dataclass
 class SimulationResults:
     """Complete results from a simulation run."""
+
     config: SimulationConfig
     environment: EnvironmentParameters
 
@@ -83,7 +83,7 @@ class SimulationResults:
 
     # Efficiency metrics
     mass_recovery_rate: float = 0.0  # Products / Generated
-    recycling_rate: float = 0.0      # Processed / Generated
+    recycling_rate: float = 0.0  # Processed / Generated
 
     # Energy metrics
     total_energy_consumed_kwh: float = 0.0
@@ -126,7 +126,7 @@ class SimulationResults:
             "scoring": {
                 "breakdown": self.score_breakdown,
                 "total": round(self.total_score, 2),
-            }
+            },
         }
 
     def to_json(self, indent: int = 2) -> str:
@@ -139,13 +139,13 @@ class SimulationResults:
         print("SIMULATION RESULTS")
         print("=" * 70)
 
-        print(f"\nMISSION PARAMETERS:")
+        print("\nMISSION PARAMETERS:")
         print(f"  Duration: {self.config.mission_duration_days} days")
         print(f"  Crew Size: {self.config.crew_size}")
         print(f"  Location: {self.config.location}")
         print(f"  Technology: {self.config.recycling_technology}")
 
-        print(f"\nMASS BALANCE:")
+        print("\nMASS BALANCE:")
         print(f"  Waste Generated:  {self.total_waste_generated_kg:,.1f} kg")
         print(f"  Waste Processed:  {self.total_waste_processed_kg:,.1f} kg")
         print(f"  Products Created: {self.total_products_kg:,.1f} kg")
@@ -153,17 +153,17 @@ class SimulationResults:
         print(f"  Recycling Rate:   {self.recycling_rate * 100:.1f}%")
         print(f"  Recovery Rate:    {self.mass_recovery_rate * 100:.1f}%")
 
-        print(f"\nENERGY BALANCE:")
+        print("\nENERGY BALANCE:")
         print(f"  Energy Consumed:  {self.total_energy_consumed_kwh:,.1f} kWh")
         print(f"  Energy Recovered: {self.total_energy_recovered_kwh:,.1f} kWh")
         print(f"  Net Energy:       {self.net_energy_kwh:,.1f} kWh")
 
-        print(f"\nPRODUCTS PRODUCED:")
+        print("\nPRODUCTS PRODUCED:")
         for product, mass in sorted(self.products_by_type.items(), key=lambda x: -x[1]):
             print(f"  {product}: {mass:,.1f} kg")
 
         if self.score_breakdown:
-            print(f"\nCHALLENGE SCORING:")
+            print("\nCHALLENGE SCORING:")
             for criterion, score in self.score_breakdown.items():
                 print(f"  {criterion}: {score:.1f}")
             print(f"  TOTAL SCORE: {self.total_score:.1f}")
@@ -184,7 +184,7 @@ class Simulation:
         crew_size: int = 4,
         mission_duration_days: int = 365,
         location: str = "lunar_habitat",
-        **kwargs
+        **kwargs,
     ):
         """
         Initialize simulation.
@@ -199,15 +199,12 @@ class Simulation:
             crew_size=crew_size,
             mission_duration_days=mission_duration_days,
             location=location,
-            **kwargs
+            **kwargs,
         )
 
         # Initialize components
         self.environment = get_environment(location)
-        self.inventory = WasteInventory(
-            crew_size=crew_size,
-            mission_start=self.config.start_date
-        )
+        self.inventory = WasteInventory(crew_size=crew_size, mission_start=self.config.start_date)
         self.recycling_system: Optional[RecyclingSystem] = None
 
         # Track selected waste streams
@@ -235,7 +232,7 @@ class Simulation:
         """Create default recycling system based on config."""
         return create_system(
             self.config.recycling_technology,
-            name=f"LunaRecycle-{self.config.recycling_technology.title()}"
+            name=f"LunaRecycle-{self.config.recycling_technology.title()}",
         )
 
     def run(self) -> SimulationResults:
@@ -250,10 +247,7 @@ class Simulation:
             self.recycling_system = self._create_default_system()
 
         # Initialize results
-        results = SimulationResults(
-            config=self.config,
-            environment=self.environment
-        )
+        results = SimulationResults(config=self.config, environment=self.environment)
 
         # Simulation loop
         for day in range(self.config.mission_duration_days):
@@ -311,7 +305,7 @@ class Simulation:
                 waste_accumulated_kg=self.inventory.total_remaining_kg,
                 products_produced_kg=products_today,
                 energy_consumed_kwh=energy_consumed,
-                energy_recovered_kwh=energy_recovered
+                energy_recovered_kwh=energy_recovered,
             )
             results.daily_metrics.append(daily)
 
@@ -330,8 +324,12 @@ class Simulation:
             )
 
         results.total_energy_consumed_kwh = self.recycling_system.metrics.total_energy_consumed_kwh
-        results.total_energy_recovered_kwh = self.recycling_system.metrics.total_energy_recovered_kwh
-        results.net_energy_kwh = results.total_energy_recovered_kwh - results.total_energy_consumed_kwh
+        results.total_energy_recovered_kwh = (
+            self.recycling_system.metrics.total_energy_recovered_kwh
+        )
+        results.net_energy_kwh = (
+            results.total_energy_recovered_kwh - results.total_energy_consumed_kwh
+        )
 
         # Calculate challenge score
         self._calculate_score(results)
@@ -384,9 +382,7 @@ class Simulation:
 
         # Difficulty bonus (max 15 points)
         # Bonus for processing difficult materials (Level 2 and 3)
-        difficulty_items = sum(
-            1 for item in self._waste_items if item.difficulty.value >= 2
-        )
+        difficulty_items = sum(1 for item in self._waste_items if item.difficulty.value >= 2)
         difficulty_score = min(15, difficulty_items * 3)
         scores["Difficulty Bonus"] = difficulty_score
 
@@ -396,9 +392,7 @@ class Simulation:
 
 # Convenience functions
 def quick_simulation(
-    days: int = 365,
-    technology: str = "hybrid",
-    location: str = "lunar_habitat"
+    days: int = 365, technology: str = "hybrid", location: str = "lunar_habitat"
 ) -> SimulationResults:
     """
     Run a quick simulation with default parameters.
@@ -412,10 +406,7 @@ def quick_simulation(
         SimulationResults
     """
     sim = Simulation(
-        crew_size=4,
-        mission_duration_days=days,
-        location=location,
-        recycling_technology=technology
+        crew_size=4, mission_duration_days=days, location=location, recycling_technology=technology
     )
     return sim.run()
 

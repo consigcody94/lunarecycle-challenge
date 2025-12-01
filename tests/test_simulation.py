@@ -10,7 +10,6 @@ from datetime import datetime
 from lunarecycle.waste.streams import (
     WasteStream,
     WasteCategory,
-    WasteItem,
     DifficultyLevel,
 )
 from lunarecycle.waste.inventory import WasteInventory
@@ -22,7 +21,7 @@ from lunarecycle.recycling.processes import (
     HeatMeltCompaction,
 )
 from lunarecycle.environment.lunar import LunarEnvironment, get_environment
-from lunarecycle.simulation.engine import Simulation, SimulationConfig
+from lunarecycle.simulation.engine import Simulation
 
 
 class TestWasteStreams:
@@ -56,8 +55,10 @@ class TestWasteStreams:
     def test_total_daily_mass_reasonable(self):
         """Test that total daily mass is in expected range."""
         total = WasteStream.get_total_daily_mass_4_crew()
-        # NASA estimates ~2 kg/astronaut/day
-        assert 4.0 <= total <= 12.0  # 4-crew range
+        # NASA estimates ~2 kg/astronaut/day total, but our model focuses on
+        # recyclable non-metabolic waste which is ~1.2-1.5 kg/astronaut/day
+        # Total for 4-crew: 4.8-6.0 kg/day
+        assert 4.0 <= total <= 8.0  # 4-crew recyclable waste range
 
     def test_difficulty_levels_assigned(self):
         """Test that difficulty levels are properly assigned."""
@@ -95,10 +96,12 @@ class TestMaterials:
     def test_pyrolysis_yields_sum(self):
         """Test that pyrolysis yields don't exceed 100%."""
         for mat in Material.get_all():
-            total = (mat.pyrolysis.syngas_yield_percent +
-                     mat.pyrolysis.oil_yield_percent +
-                     mat.pyrolysis.char_yield_percent +
-                     mat.pyrolysis.water_yield_percent)
+            total = (
+                mat.pyrolysis.syngas_yield_percent
+                + mat.pyrolysis.oil_yield_percent
+                + mat.pyrolysis.char_yield_percent
+                + mat.pyrolysis.water_yield_percent
+            )
             assert total <= 101.0, f"{mat.name} pyrolysis yields sum to {total}%"
 
 
@@ -254,21 +257,13 @@ class TestSimulation:
 
     def test_simulation_creation(self):
         """Test creating a simulation."""
-        sim = Simulation(
-            crew_size=4,
-            mission_duration_days=30,
-            location="lunar_habitat"
-        )
+        sim = Simulation(crew_size=4, mission_duration_days=30, location="lunar_habitat")
         assert sim.config.crew_size == 4
         assert sim.config.mission_duration_days == 30
 
     def test_simulation_run(self):
         """Test running a simulation."""
-        sim = Simulation(
-            crew_size=4,
-            mission_duration_days=30,
-            location="lunar_habitat"
-        )
+        sim = Simulation(crew_size=4, mission_duration_days=30, location="lunar_habitat")
         results = sim.run()
 
         assert results.total_waste_generated_kg > 0
@@ -277,11 +272,7 @@ class TestSimulation:
 
     def test_simulation_scoring(self):
         """Test simulation calculates scores."""
-        sim = Simulation(
-            crew_size=4,
-            mission_duration_days=30,
-            location="lunar_habitat"
-        )
+        sim = Simulation(crew_size=4, mission_duration_days=30, location="lunar_habitat")
         results = sim.run()
 
         assert results.total_score > 0
@@ -312,12 +303,13 @@ class TestIntegration:
             crew_size=4,
             mission_duration_days=365,
             location="lunar_habitat",
-            recycling_technology="hybrid"
+            recycling_technology="hybrid",
         )
         results = sim.run()
 
-        # NASA estimates ~2100-2600 kg/year for 4 crew
-        assert 1500 <= results.total_waste_generated_kg <= 3500
+        # Our model estimates ~1800-2200 kg/year for 4 crew (recyclable waste only)
+        # NASA's 2100-2600 kg includes some metabolic waste we don't model
+        assert 1500 <= results.total_waste_generated_kg <= 2500
 
         # Should process most waste
         assert results.recycling_rate > 0.5
@@ -329,11 +321,7 @@ class TestIntegration:
         """Test different technologies produce different results."""
         results = {}
         for tech in ["pyrolysis", "plasma", "hybrid"]:
-            sim = Simulation(
-                crew_size=4,
-                mission_duration_days=30,
-                recycling_technology=tech
-            )
+            sim = Simulation(crew_size=4, mission_duration_days=30, recycling_technology=tech)
             results[tech] = sim.run()
 
         # Different technologies should have different energy profiles

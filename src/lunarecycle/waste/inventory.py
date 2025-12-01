@@ -15,6 +15,7 @@ from lunarecycle.waste.streams import WasteItem, WasteCategory, WasteStream
 @dataclass
 class InventoryEntry:
     """Single entry in the waste inventory."""
+
     waste_item: WasteItem
     quantity_kg: float
     accumulated_date: datetime
@@ -29,6 +30,7 @@ class WasteInventory:
 
     Tracks what waste has been generated, processed, and remaining.
     """
+
     crew_size: int = 4
     mission_start: datetime = field(default_factory=datetime.now)
     entries: list[InventoryEntry] = field(default_factory=list)
@@ -38,7 +40,9 @@ class WasteInventory:
     total_processed_kg: float = 0.0
     total_remaining_kg: float = 0.0
 
-    def add_daily_waste(self, current_date: datetime, waste_items: Optional[list[WasteItem]] = None):
+    def add_daily_waste(
+        self, current_date: datetime, waste_items: Optional[list[WasteItem]] = None
+    ):
         """
         Add one day's worth of waste generation.
 
@@ -52,9 +56,7 @@ class WasteInventory:
         for item in waste_items:
             daily_mass = item.mass_per_unit_kg * item.generation_rate_per_crew_day * self.crew_size
             entry = InventoryEntry(
-                waste_item=item,
-                quantity_kg=daily_mass,
-                accumulated_date=current_date
+                waste_item=item, quantity_kg=daily_mass, accumulated_date=current_date
             )
             self.entries.append(entry)
             self.total_generated_kg += daily_mass
@@ -72,8 +74,9 @@ class WasteInventory:
             current_date = self.mission_start + timedelta(days=day)
             self.add_daily_waste(current_date, waste_items)
 
-    def process_waste(self, waste_item: WasteItem, quantity_kg: float,
-                      process_date: datetime) -> float:
+    def process_waste(
+        self, waste_item: WasteItem, quantity_kg: float, process_date: datetime
+    ) -> float:
         """
         Mark waste as processed.
 
@@ -89,10 +92,11 @@ class WasteInventory:
         processed = 0.0
 
         for entry in self.entries:
-            if (entry.waste_item.name == waste_item.name and
-                not entry.processed and
-                remaining_to_process > 0):
-
+            if (
+                entry.waste_item.name == waste_item.name
+                and not entry.processed
+                and remaining_to_process > 0
+            ):
                 if entry.quantity_kg <= remaining_to_process:
                     # Process entire entry
                     entry.processed = True
@@ -106,7 +110,7 @@ class WasteInventory:
                         quantity_kg=remaining_to_process,
                         accumulated_date=entry.accumulated_date,
                         processed=True,
-                        processed_date=process_date
+                        processed_date=process_date,
                     )
                     entry.quantity_kg -= remaining_to_process
                     self.entries.append(processed_entry)
@@ -120,22 +124,22 @@ class WasteInventory:
     def get_unprocessed_by_category(self, category: WasteCategory) -> float:
         """Get total unprocessed waste mass for a category (kg)."""
         return sum(
-            entry.quantity_kg for entry in self.entries
+            entry.quantity_kg
+            for entry in self.entries
             if entry.waste_item.category == category and not entry.processed
         )
 
     def get_unprocessed_by_item(self, item_name: str) -> float:
         """Get total unprocessed waste mass for a specific item (kg)."""
         return sum(
-            entry.quantity_kg for entry in self.entries
+            entry.quantity_kg
+            for entry in self.entries
             if entry.waste_item.name == item_name and not entry.processed
         )
 
     def get_total_unprocessed(self) -> float:
         """Get total unprocessed waste mass (kg)."""
-        return sum(
-            entry.quantity_kg for entry in self.entries if not entry.processed
-        )
+        return sum(entry.quantity_kg for entry in self.entries if not entry.processed)
 
     def get_category_summary(self) -> dict[WasteCategory, dict]:
         """Get summary statistics by waste category."""
@@ -149,7 +153,7 @@ class WasteInventory:
                     "total_kg": total,
                     "processed_kg": processed,
                     "remaining_kg": total - processed,
-                    "processing_rate": processed / total if total > 0 else 0.0
+                    "processing_rate": processed / total if total > 0 else 0.0,
                 }
         return summary
 
@@ -167,7 +171,7 @@ class WasteInventory:
                     "total_kg": total,
                     "processed_kg": processed,
                     "remaining_kg": total - processed,
-                    "processing_rate": processed / total if total > 0 else 0.0
+                    "processing_rate": processed / total if total > 0 else 0.0,
                 }
         return summary
 
@@ -182,7 +186,7 @@ class WasteInventory:
             "category_summary": {
                 cat.name: data for cat, data in self.get_category_summary().items()
             },
-            "item_summary": self.get_item_summary()
+            "item_summary": self.get_item_summary(),
         }
 
     def to_json(self, indent: int = 2) -> str:
@@ -199,7 +203,11 @@ class WasteInventory:
         print(f"\nTotal Generated: {self.total_generated_kg:.2f} kg")
         print(f"Total Processed: {self.total_processed_kg:.2f} kg")
         print(f"Total Remaining: {self.total_remaining_kg:.2f} kg")
-        print(f"Overall Processing Rate: {self.total_processed_kg / self.total_generated_kg * 100:.1f}%" if self.total_generated_kg > 0 else "N/A")
+        print(
+            f"Overall Processing Rate: {self.total_processed_kg / self.total_generated_kg * 100:.1f}%"
+            if self.total_generated_kg > 0
+            else "N/A"
+        )
 
         print("\n" + "-" * 60)
         print("BY CATEGORY:")
@@ -207,7 +215,9 @@ class WasteInventory:
         for category, data in self.get_category_summary().items():
             print(f"\n{category.name}:")
             print(f"  Total: {data['total_kg']:.2f} kg")
-            print(f"  Processed: {data['processed_kg']:.2f} kg ({data['processing_rate']*100:.1f}%)")
+            print(
+                f"  Processed: {data['processed_kg']:.2f} kg ({data['processing_rate'] * 100:.1f}%)"
+            )
             print(f"  Remaining: {data['remaining_kg']:.2f} kg")
 
         print("\n" + "=" * 60)

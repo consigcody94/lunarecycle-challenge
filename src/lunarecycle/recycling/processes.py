@@ -8,30 +8,31 @@ Based on NASA research and industrial recycling data.
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Optional
 
 from lunarecycle.waste.streams import WasteItem, WasteCategory
-from lunarecycle.waste.materials import Material, MaterialProperty
+from lunarecycle.waste.materials import Material
 
 
 class ProductType(Enum):
     """Types of products from recycling processes."""
-    SYNGAS = auto()          # CO, H2, CH4 mixture
-    PYROLYSIS_OIL = auto()   # Liquid hydrocarbons
-    CHAR = auto()            # Solid carbon residue
-    WATER = auto()           # Recovered water
-    FILAMENT = auto()        # 3D printing filament
-    PELLETS = auto()         # Plastic pellets for molding
-    COMPOSITE = auto()       # Reinforced composite material
-    CARBON_FIBER = auto()    # Structured carbon
-    METAL = auto()           # Recovered metals
-    ASH = auto()             # Inert residue
-    HEAT = auto()            # Thermal energy
+
+    SYNGAS = auto()  # CO, H2, CH4 mixture
+    PYROLYSIS_OIL = auto()  # Liquid hydrocarbons
+    CHAR = auto()  # Solid carbon residue
+    WATER = auto()  # Recovered water
+    FILAMENT = auto()  # 3D printing filament
+    PELLETS = auto()  # Plastic pellets for molding
+    COMPOSITE = auto()  # Reinforced composite material
+    CARBON_FIBER = auto()  # Structured carbon
+    METAL = auto()  # Recovered metals
+    ASH = auto()  # Inert residue
+    HEAT = auto()  # Thermal energy
 
 
 @dataclass
 class Product:
     """Output product from a recycling process."""
+
     product_type: ProductType
     mass_kg: float
     quality_score: float = 1.0  # 0-1, 1 = highest quality
@@ -42,6 +43,7 @@ class Product:
 @dataclass
 class ProcessingResult:
     """Results from processing waste through a recycling system."""
+
     input_mass_kg: float
     input_waste_items: list[WasteItem]
 
@@ -115,7 +117,7 @@ class PyrolysisProcess(RecyclingProcess):
         self,
         max_capacity_kg_hr: float = 2.0,
         operating_temp_c: float = 550.0,
-        residence_time_min: float = 30.0
+        residence_time_min: float = 30.0,
     ):
         super().__init__("Pyrolysis", max_capacity_kg_hr)
         self.operating_temp_c = operating_temp_c
@@ -199,43 +201,53 @@ class PyrolysisProcess(RecyclingProcess):
         # Build product list
         products = []
         if syngas_mass > 0:
-            products.append(Product(
-                product_type=ProductType.SYNGAS,
-                mass_kg=syngas_mass,
-                quality_score=0.85,
-                energy_content_mj=energy_content * 0.4,
-                description="Synthesis gas (CO, H2, CH4)"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.SYNGAS,
+                    mass_kg=syngas_mass,
+                    quality_score=0.85,
+                    energy_content_mj=energy_content * 0.4,
+                    description="Synthesis gas (CO, H2, CH4)",
+                )
+            )
         if oil_mass > 0:
-            products.append(Product(
-                product_type=ProductType.PYROLYSIS_OIL,
-                mass_kg=oil_mass,
-                quality_score=0.7,
-                energy_content_mj=energy_content * 0.5,
-                description="Pyrolysis oil (liquid hydrocarbons)"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.PYROLYSIS_OIL,
+                    mass_kg=oil_mass,
+                    quality_score=0.7,
+                    energy_content_mj=energy_content * 0.5,
+                    description="Pyrolysis oil (liquid hydrocarbons)",
+                )
+            )
         if char_mass > 0:
-            products.append(Product(
-                product_type=ProductType.CHAR,
-                mass_kg=char_mass,
-                quality_score=0.9,
-                energy_content_mj=energy_content * 0.1,
-                description="Biochar/carbon residue"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.CHAR,
+                    mass_kg=char_mass,
+                    quality_score=0.9,
+                    energy_content_mj=energy_content * 0.1,
+                    description="Biochar/carbon residue",
+                )
+            )
         if water_mass > 0:
-            products.append(Product(
-                product_type=ProductType.WATER,
-                mass_kg=water_mass,
-                quality_score=0.6,  # Needs purification
-                description="Recovered water (requires treatment)"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.WATER,
+                    mass_kg=water_mass,
+                    quality_score=0.6,  # Needs purification
+                    description="Recovered water (requires treatment)",
+                )
+            )
         if metal_mass > 0:
-            products.append(Product(
-                product_type=ProductType.METAL,
-                mass_kg=metal_mass,
-                quality_score=0.95,
-                description="Recovered aluminum"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.METAL,
+                    mass_kg=metal_mass,
+                    quality_score=0.95,
+                    description="Recovered aluminum",
+                )
+            )
 
         # Calculate processing time
         processing_time = (total_input / self.max_capacity_kg_hr) + (self.residence_time_min / 60)
@@ -254,7 +266,7 @@ class PyrolysisProcess(RecyclingProcess):
             energy_recovered_kwh=energy_content / 3.6,  # MJ to kWh
             processing_time_hours=processing_time,
             toxins_released=toxins,
-            microplastics_generated=microplastics
+            microplastics_generated=microplastics,
         )
 
 
@@ -272,7 +284,7 @@ class MeltExtrusionProcess(RecyclingProcess):
     def __init__(
         self,
         max_capacity_kg_hr: float = 1.0,
-        output_form: str = "filament"  # "filament" or "pellets"
+        output_form: str = "filament",  # "filament" or "pellets"
     ):
         super().__init__("Melt Extrusion", max_capacity_kg_hr)
         self.output_form = output_form
@@ -302,16 +314,20 @@ class MeltExtrusionProcess(RecyclingProcess):
                 rejected_mass += mass
 
         # Output product
-        product_type = ProductType.FILAMENT if self.output_form == "filament" else ProductType.PELLETS
+        product_type = (
+            ProductType.FILAMENT if self.output_form == "filament" else ProductType.PELLETS
+        )
         products = []
 
         if processable_mass > 0:
-            products.append(Product(
-                product_type=product_type,
-                mass_kg=processable_mass,
-                quality_score=0.8,  # Recycled quality
-                description=f"Recycled plastic {self.output_form}"
-            ))
+            products.append(
+                Product(
+                    product_type=product_type,
+                    mass_kg=processable_mass,
+                    quality_score=0.8,  # Recycled quality
+                    description=f"Recycled plastic {self.output_form}",
+                )
+            )
 
         processing_time = total_input / self.max_capacity_kg_hr
 
@@ -323,7 +339,7 @@ class MeltExtrusionProcess(RecyclingProcess):
             mass_recovery_rate=processable_mass / total_input if total_input > 0 else 0,
             energy_consumed_kwh=self.get_energy_requirement(processable_mass),
             processing_time_hours=processing_time,
-            microplastics_generated=True  # Concern during shredding
+            microplastics_generated=True,  # Concern during shredding
         )
 
 
@@ -356,13 +372,12 @@ class PlasmaProcess(RecyclingProcess):
 
         # Plasma converts everything to syngas + vitrified slag
         syngas_mass = total_input * 0.75  # Most mass becomes gas
-        slag_mass = total_input * 0.20    # Inert vitrified material
-        metal_mass = total_input * 0.05   # Recovered metals
+        slag_mass = total_input * 0.20  # Inert vitrified material
+        metal_mass = total_input * 0.05  # Recovered metals
 
         # High energy recovery from complete gasification
         total_energy_mj = sum(
-            mass * (item.heating_value_mj_kg or 20)
-            for item, mass in zip(waste_items, masses_kg)
+            mass * (item.heating_value_mj_kg or 20) for item, mass in zip(waste_items, masses_kg)
         )
 
         products = [
@@ -371,19 +386,19 @@ class PlasmaProcess(RecyclingProcess):
                 mass_kg=syngas_mass,
                 quality_score=0.95,  # Very clean syngas
                 energy_content_mj=total_energy_mj * 0.8,
-                description="High-purity synthesis gas"
+                description="High-purity synthesis gas",
             ),
             Product(
                 product_type=ProductType.ASH,
                 mass_kg=slag_mass,
                 quality_score=1.0,
-                description="Vitrified slag (inert, can be used as construction material)"
+                description="Vitrified slag (inert, can be used as construction material)",
             ),
             Product(
                 product_type=ProductType.METAL,
                 mass_kg=metal_mass,
                 quality_score=0.9,
-                description="Recovered metals"
+                description="Recovered metals",
             ),
         ]
 
@@ -399,7 +414,7 @@ class PlasmaProcess(RecyclingProcess):
             energy_recovered_kwh=total_energy_mj * 0.8 / 3.6,
             processing_time_hours=processing_time,
             toxins_released=False,  # Destroyed at plasma temps
-            microplastics_generated=False
+            microplastics_generated=False,
         )
 
 
@@ -418,7 +433,7 @@ class HeatMeltCompaction(RecyclingProcess):
         self,
         max_capacity_kg_hr: float = 2.0,
         operating_temp_c: float = 150.0,
-        target_water_activity: float = 0.5
+        target_water_activity: float = 0.5,
     ):
         super().__init__("Heat Melt Compaction", max_capacity_kg_hr)
         self.operating_temp_c = operating_temp_c
@@ -453,17 +468,19 @@ class HeatMeltCompaction(RecyclingProcess):
                 product_type=ProductType.COMPOSITE,
                 mass_kg=tile_mass,
                 quality_score=0.7,
-                description="Compacted waste tile (can be used as radiation shielding)"
+                description="Compacted waste tile (can be used as radiation shielding)",
             ),
         ]
 
         if water_recovered > 0:
-            products.append(Product(
-                product_type=ProductType.WATER,
-                mass_kg=water_recovered,
-                quality_score=0.5,  # Needs significant purification
-                description="Recovered water (requires treatment)"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.WATER,
+                    mass_kg=water_recovered,
+                    quality_score=0.5,  # Needs significant purification
+                    description="Recovered water (requires treatment)",
+                )
+            )
 
         processing_time = total_input / self.max_capacity_kg_hr
 
@@ -472,7 +489,9 @@ class HeatMeltCompaction(RecyclingProcess):
             input_waste_items=waste_items,
             products=products,
             waste_residue_kg=0.0,
-            mass_recovery_rate=(tile_mass + water_recovered) / total_input if total_input > 0 else 0,
+            mass_recovery_rate=(tile_mass + water_recovered) / total_input
+            if total_input > 0
+            else 0,
             energy_consumed_kwh=self.get_energy_requirement(total_input),
             processing_time_hours=processing_time,
         )
@@ -495,8 +514,10 @@ class CompositeManufacturing(RecyclingProcess):
 
     def can_process(self, waste_item: WasteItem) -> bool:
         # Processes foam and thermoplastics
-        return (waste_item.category == WasteCategory.FOAM_PACKING or
-                waste_item.composition.primary_material in {"LDPE", "HDPE", "PP", "PET", "PE"})
+        return (
+            waste_item.category == WasteCategory.FOAM_PACKING
+            or waste_item.composition.primary_material in {"LDPE", "HDPE", "PP", "PET", "PE"}
+        )
 
     def get_energy_requirement(self, mass_kg: float) -> float:
         return mass_kg * self.specific_energy_kwh_kg
@@ -526,12 +547,14 @@ class CompositeManufacturing(RecyclingProcess):
 
         products = []
         if composite_mass > 0:
-            products.append(Product(
-                product_type=ProductType.COMPOSITE,
-                mass_kg=composite_mass,
-                quality_score=0.85,
-                description="Thermoplastic-foam composite material"
-            ))
+            products.append(
+                Product(
+                    product_type=ProductType.COMPOSITE,
+                    mass_kg=composite_mass,
+                    quality_score=0.85,
+                    description="Thermoplastic-foam composite material",
+                )
+            )
 
         processing_time = total_input / self.max_capacity_kg_hr
 

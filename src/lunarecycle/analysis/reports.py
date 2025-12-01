@@ -69,26 +69,30 @@ def generate_summary_report(results: SimulationResults, output_path: Optional[Pa
         pct = (mass / results.total_products_kg * 100) if results.total_products_kg > 0 else 0
         report_lines.append(f"  {product:20s}: {mass:,.1f} kg ({pct:.1f}%)")
 
-    report_lines.extend([
-        "",
-        "CHALLENGE SCORING",
-        "-" * 40,
-    ])
+    report_lines.extend(
+        [
+            "",
+            "CHALLENGE SCORING",
+            "-" * 40,
+        ]
+    )
 
     for criterion, score in results.score_breakdown.items():
         report_lines.append(f"  {criterion:25s}: {score:.1f}")
 
-    report_lines.extend([
-        f"  {'TOTAL SCORE':25s}: {results.total_score:.1f}",
-        "",
-        "DAILY STATISTICS",
-        "-" * 40,
-        f"Avg Daily Waste:     {results.total_waste_generated_kg / results.config.mission_duration_days:.2f} kg/day",
-        f"Avg Daily Products:  {results.total_products_kg / results.config.mission_duration_days:.2f} kg/day",
-        f"Avg Daily Energy:    {results.total_energy_consumed_kwh / results.config.mission_duration_days:.2f} kWh/day",
-        "",
-        "=" * 80,
-    ])
+    report_lines.extend(
+        [
+            f"  {'TOTAL SCORE':25s}: {results.total_score:.1f}",
+            "",
+            "DAILY STATISTICS",
+            "-" * 40,
+            f"Avg Daily Waste:     {results.total_waste_generated_kg / results.config.mission_duration_days:.2f} kg/day",
+            f"Avg Daily Products:  {results.total_products_kg / results.config.mission_duration_days:.2f} kg/day",
+            f"Avg Daily Energy:    {results.total_energy_consumed_kwh / results.config.mission_duration_days:.2f} kWh/day",
+            "",
+            "=" * 80,
+        ]
+    )
 
     report_text = "\n".join(report_lines)
 
@@ -110,32 +114,32 @@ def generate_mass_balance_chart(results: SimulationResults, output_path: Optiona
         fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
         # Chart 1: Mass flow Sankey-style bar
-        categories = ['Generated', 'Processed', 'Products', 'Residue']
+        categories = ["Generated", "Processed", "Products", "Residue"]
         values = [
             results.total_waste_generated_kg,
             results.total_waste_processed_kg,
             results.total_products_kg,
-            results.total_residue_kg
+            results.total_residue_kg,
         ]
-        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
+        colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"]
 
         axes[0].barh(categories, values, color=colors)
-        axes[0].set_xlabel('Mass (kg)')
-        axes[0].set_title('Mass Balance Overview')
+        axes[0].set_xlabel("Mass (kg)")
+        axes[0].set_title("Mass Balance Overview")
         for i, v in enumerate(values):
-            axes[0].text(v + 10, i, f'{v:.0f} kg', va='center')
+            axes[0].text(v + 10, i, f"{v:.0f} kg", va="center")
 
         # Chart 2: Products breakdown pie chart
         if results.products_by_type:
             products = list(results.products_by_type.keys())
             masses = list(results.products_by_type.values())
-            axes[1].pie(masses, labels=products, autopct='%1.1f%%', startangle=90)
-            axes[1].set_title('Products Breakdown')
+            axes[1].pie(masses, labels=products, autopct="%1.1f%%", startangle=90)
+            axes[1].set_title("Products Breakdown")
 
         plt.tight_layout()
 
         if output_path:
-            plt.savefig(output_path, dpi=150, bbox_inches='tight')
+            plt.savefig(output_path, dpi=150, bbox_inches="tight")
             plt.close()
         else:
             plt.show()
@@ -179,19 +183,19 @@ def generate_energy_chart(results: SimulationResults, output_path: Optional[Path
             cumulative_recovered.append(running_recovered)
 
         plt.figure(figsize=(12, 6))
-        plt.plot(days, cumulative_consumed, label='Energy Consumed', color='red', linewidth=2)
-        plt.plot(days, cumulative_recovered, label='Energy Recovered', color='green', linewidth=2)
-        plt.fill_between(days, cumulative_consumed, alpha=0.3, color='red')
-        plt.fill_between(days, cumulative_recovered, alpha=0.3, color='green')
+        plt.plot(days, cumulative_consumed, label="Energy Consumed", color="red", linewidth=2)
+        plt.plot(days, cumulative_recovered, label="Energy Recovered", color="green", linewidth=2)
+        plt.fill_between(days, cumulative_consumed, alpha=0.3, color="red")
+        plt.fill_between(days, cumulative_recovered, alpha=0.3, color="green")
 
-        plt.xlabel('Mission Day')
-        plt.ylabel('Cumulative Energy (kWh)')
-        plt.title('Energy Balance Over Mission Duration')
+        plt.xlabel("Mission Day")
+        plt.ylabel("Cumulative Energy (kWh)")
+        plt.title("Energy Balance Over Mission Duration")
         plt.legend()
         plt.grid(True, alpha=0.3)
 
         if output_path:
-            plt.savefig(output_path, dpi=150, bbox_inches='tight')
+            plt.savefig(output_path, dpi=150, bbox_inches="tight")
             plt.close()
         else:
             plt.show()
@@ -212,43 +216,44 @@ def export_results_csv(results: SimulationResults, output_path: Path):
         results: SimulationResults to export
         output_path: Path for output CSV file
     """
-    with open(output_path, 'w', newline='') as f:
+    with open(output_path, "w", newline="") as f:
         writer = csv.writer(f)
 
         # Header
-        writer.writerow([
-            'Day',
-            'Date',
-            'Waste_Generated_kg',
-            'Waste_Processed_kg',
-            'Waste_Accumulated_kg',
-            'Products_Produced_kg',
-            'Energy_Consumed_kWh',
-            'Energy_Recovered_kWh',
-            'Net_Energy_kWh'
-        ])
+        writer.writerow(
+            [
+                "Day",
+                "Date",
+                "Waste_Generated_kg",
+                "Waste_Processed_kg",
+                "Waste_Accumulated_kg",
+                "Products_Produced_kg",
+                "Energy_Consumed_kWh",
+                "Energy_Recovered_kWh",
+                "Net_Energy_kWh",
+            ]
+        )
 
         # Data rows
         for m in results.daily_metrics:
-            writer.writerow([
-                m.day,
-                m.date.strftime('%Y-%m-%d'),
-                f'{m.waste_generated_kg:.3f}',
-                f'{m.waste_processed_kg:.3f}',
-                f'{m.waste_accumulated_kg:.3f}',
-                f'{m.products_produced_kg:.3f}',
-                f'{m.energy_consumed_kwh:.3f}',
-                f'{m.energy_recovered_kwh:.3f}',
-                f'{m.energy_recovered_kwh - m.energy_consumed_kwh:.3f}'
-            ])
+            writer.writerow(
+                [
+                    m.day,
+                    m.date.strftime("%Y-%m-%d"),
+                    f"{m.waste_generated_kg:.3f}",
+                    f"{m.waste_processed_kg:.3f}",
+                    f"{m.waste_accumulated_kg:.3f}",
+                    f"{m.products_produced_kg:.3f}",
+                    f"{m.energy_consumed_kwh:.3f}",
+                    f"{m.energy_recovered_kwh:.3f}",
+                    f"{m.energy_recovered_kwh - m.energy_consumed_kwh:.3f}",
+                ]
+            )
 
     print(f"Results exported to: {output_path}")
 
 
-def compare_technologies(
-    days: int = 365,
-    technologies: Optional[list[str]] = None
-) -> dict:
+def compare_technologies(days: int = 365, technologies: Optional[list[str]] = None) -> dict:
     """
     Compare different recycling technologies.
 
@@ -271,7 +276,7 @@ def compare_technologies(
             crew_size=4,
             mission_duration_days=days,
             location="lunar_habitat",
-            recycling_technology=tech
+            recycling_technology=tech,
         )
         results = sim.run()
 
@@ -280,7 +285,7 @@ def compare_technologies(
             "mass_recovery": results.mass_recovery_rate,
             "net_energy_kwh": results.net_energy_kwh,
             "total_score": results.total_score,
-            "products": results.products_by_type
+            "products": results.products_by_type,
         }
 
     return comparison
@@ -299,12 +304,14 @@ def print_technology_comparison(comparison: dict):
     print("-" * 80)
 
     for tech, data in comparison.items():
-        print(row_format.format(
-            tech.upper(),
-            f"{data['recycling_rate']*100:.1f}%",
-            f"{data['mass_recovery']*100:.1f}%",
-            f"{data['net_energy_kwh']:.0f} kWh",
-            f"{data['total_score']:.1f}"
-        ))
+        print(
+            row_format.format(
+                tech.upper(),
+                f"{data['recycling_rate'] * 100:.1f}%",
+                f"{data['mass_recovery'] * 100:.1f}%",
+                f"{data['net_energy_kwh']:.0f} kWh",
+                f"{data['total_score']:.1f}",
+            )
+        )
 
     print("=" * 80)

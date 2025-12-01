@@ -12,6 +12,7 @@ from typing import Optional
 
 class MaterialType(Enum):
     """Classification of material types."""
+
     THERMOPLASTIC = auto()
     THERMOSET = auto()
     NATURAL_FIBER = auto()
@@ -25,6 +26,7 @@ class MaterialType(Enum):
 @dataclass
 class ThermalProperties:
     """Thermal properties of a material."""
+
     melting_point_c: Optional[float] = None  # None for non-melting materials
     glass_transition_c: Optional[float] = None
     decomposition_temp_c: float = 500.0
@@ -36,6 +38,7 @@ class ThermalProperties:
 @dataclass
 class ChemicalProperties:
     """Chemical properties relevant to recycling."""
+
     formula: str
     molecular_weight: Optional[float] = None
     carbon_content_percent: float = 0.0
@@ -52,14 +55,19 @@ class ChemicalProperties:
 @dataclass
 class PyrolysisProducts:
     """Expected products from pyrolysis of this material."""
+
     syngas_yield_percent: float = 0.0  # CO, H2, CH4
     oil_yield_percent: float = 0.0
     char_yield_percent: float = 0.0
     water_yield_percent: float = 0.0
 
     def __post_init__(self):
-        total = (self.syngas_yield_percent + self.oil_yield_percent +
-                 self.char_yield_percent + self.water_yield_percent)
+        total = (
+            self.syngas_yield_percent
+            + self.oil_yield_percent
+            + self.char_yield_percent
+            + self.water_yield_percent
+        )
         if total > 101.0:  # Allow small rounding
             raise ValueError(f"Pyrolysis products cannot exceed 100%, got {total}%")
 
@@ -67,6 +75,7 @@ class PyrolysisProducts:
 @dataclass
 class MaterialProperty:
     """Complete material property specification."""
+
     name: str
     material_type: MaterialType
     density_kg_m3: float
@@ -106,7 +115,7 @@ class Material:
             decomposition_temp_c=350.0,
             specific_heat_j_kg_k=2300.0,
             thermal_conductivity_w_m_k=0.33,
-            heat_of_fusion_kj_kg=100.0
+            heat_of_fusion_kj_kg=100.0,
         ),
         chemical=ChemicalProperties(
             formula="(C2H4)n",
@@ -119,7 +128,7 @@ class Material:
             char_yield_percent=5.0,
         ),
         recyclability_score=0.9,
-        creates_microplastics=True
+        creates_microplastics=True,
     )
 
     HDPE = MaterialProperty(
@@ -133,7 +142,7 @@ class Material:
             decomposition_temp_c=380.0,
             specific_heat_j_kg_k=1900.0,
             thermal_conductivity_w_m_k=0.48,
-            heat_of_fusion_kj_kg=180.0
+            heat_of_fusion_kj_kg=180.0,
         ),
         chemical=ChemicalProperties(
             formula="(C2H4)n",
@@ -146,7 +155,7 @@ class Material:
             char_yield_percent=6.0,
         ),
         recyclability_score=0.9,
-        creates_microplastics=True
+        creates_microplastics=True,
     )
 
     # === POLYPROPYLENE ===
@@ -161,7 +170,7 @@ class Material:
             decomposition_temp_c=380.0,
             specific_heat_j_kg_k=1920.0,
             thermal_conductivity_w_m_k=0.22,
-            heat_of_fusion_kj_kg=100.0
+            heat_of_fusion_kj_kg=100.0,
         ),
         chemical=ChemicalProperties(
             formula="(C3H6)n",
@@ -174,7 +183,7 @@ class Material:
             char_yield_percent=5.0,
         ),
         recyclability_score=0.85,
-        creates_microplastics=True
+        creates_microplastics=True,
     )
 
     # === PET (Polyethylene Terephthalate) ===
@@ -189,7 +198,7 @@ class Material:
             decomposition_temp_c=400.0,
             specific_heat_j_kg_k=1200.0,
             thermal_conductivity_w_m_k=0.24,
-            heat_of_fusion_kj_kg=140.0
+            heat_of_fusion_kj_kg=140.0,
         ),
         chemical=ChemicalProperties(
             formula="(C10H8O4)n",
@@ -201,10 +210,10 @@ class Material:
             syngas_yield_percent=25.0,
             oil_yield_percent=55.0,
             char_yield_percent=15.0,
-            water_yield_percent=5.0
+            water_yield_percent=5.0,
         ),
         recyclability_score=0.8,
-        creates_microplastics=True
+        creates_microplastics=True,
     )
 
     # === PVDF (Zotek foam material) ===
@@ -219,23 +228,23 @@ class Material:
             decomposition_temp_c=450.0,
             specific_heat_j_kg_k=1300.0,
             thermal_conductivity_w_m_k=0.19,
-            heat_of_fusion_kj_kg=50.0
+            heat_of_fusion_kj_kg=50.0,
         ),
         chemical=ChemicalProperties(
             formula="(C2H2F2)n",
             carbon_content_percent=37.5,
             hydrogen_content_percent=3.1,
-            other_elements={"F": 59.4}
+            other_elements={"F": 59.4},
         ),
         pyrolysis=PyrolysisProducts(
             syngas_yield_percent=30.0,  # HF release concern!
             oil_yield_percent=20.0,
             char_yield_percent=40.0,
-            water_yield_percent=10.0
+            water_yield_percent=10.0,
         ),
         recyclability_score=0.3,  # Difficult due to fluorine
         releases_toxins=True,  # HF gas at high temperatures
-        pfas_containing=True
+        pfas_containing=True,
     )
 
     # === POLYESTER ===
@@ -250,7 +259,7 @@ class Material:
             decomposition_temp_c=400.0,
             specific_heat_j_kg_k=1200.0,
             thermal_conductivity_w_m_k=0.15,
-            heat_of_fusion_kj_kg=140.0
+            heat_of_fusion_kj_kg=140.0,
         ),
         chemical=ChemicalProperties(
             formula="(C10H8O4)n",
@@ -262,10 +271,10 @@ class Material:
             syngas_yield_percent=25.0,
             oil_yield_percent=50.0,
             char_yield_percent=20.0,
-            water_yield_percent=5.0
+            water_yield_percent=5.0,
         ),
         recyclability_score=0.7,
-        creates_microplastics=True
+        creates_microplastics=True,
     )
 
     # === NYLON ===
@@ -280,7 +289,7 @@ class Material:
             decomposition_temp_c=420.0,
             specific_heat_j_kg_k=1700.0,
             thermal_conductivity_w_m_k=0.25,
-            heat_of_fusion_kj_kg=95.0
+            heat_of_fusion_kj_kg=95.0,
         ),
         chemical=ChemicalProperties(
             formula="(C12H22N2O2)n",
@@ -293,10 +302,10 @@ class Material:
             syngas_yield_percent=20.0,
             oil_yield_percent=55.0,
             char_yield_percent=15.0,
-            water_yield_percent=10.0
+            water_yield_percent=10.0,
         ),
         recyclability_score=0.6,
-        creates_microplastics=True
+        creates_microplastics=True,
     )
 
     # === COTTON ===
@@ -320,7 +329,7 @@ class Material:
             syngas_yield_percent=35.0,
             oil_yield_percent=25.0,
             char_yield_percent=25.0,
-            water_yield_percent=15.0
+            water_yield_percent=15.0,
         ),
         recyclability_score=0.7,
     )
@@ -335,7 +344,7 @@ class Material:
             melting_point_c=660.0,
             specific_heat_j_kg_k=900.0,
             thermal_conductivity_w_m_k=237.0,
-            heat_of_fusion_kj_kg=400.0
+            heat_of_fusion_kj_kg=400.0,
         ),
         chemical=ChemicalProperties(
             formula="Al",
@@ -345,7 +354,7 @@ class Material:
             char_yield_percent=100.0,  # Remains as metal
         ),
         recyclability_score=0.95,
-        requires_sorting=True
+        requires_sorting=True,
     )
 
     # === CELLULOSE (Paper) ===
@@ -369,7 +378,7 @@ class Material:
             syngas_yield_percent=30.0,
             oil_yield_percent=30.0,
             char_yield_percent=20.0,
-            water_yield_percent=20.0
+            water_yield_percent=20.0,
         ),
         recyclability_score=0.8,
     )
@@ -401,18 +410,62 @@ class Material:
     def get_all(cls) -> list[MaterialProperty]:
         """Get all defined materials."""
         return [
-            cls.LDPE, cls.HDPE, cls.PP, cls.PET, cls.PVDF,
-            cls.POLYESTER, cls.NYLON, cls.COTTON, cls.ALUMINUM,
-            cls.CELLULOSE, cls.ACTIVATED_CARBON
+            cls.LDPE,
+            cls.HDPE,
+            cls.PP,
+            cls.PET,
+            cls.PVDF,
+            cls.POLYESTER,
+            cls.NYLON,
+            cls.COTTON,
+            cls.ALUMINUM,
+            cls.CELLULOSE,
+            cls.ACTIVATED_CARBON,
         ]
+
+    # Short code to material mapping
+    _SHORT_CODES: dict[str, str] = {
+        "ldpe": "LDPE",
+        "hdpe": "HDPE",
+        "pp": "PP",
+        "pet": "PET",
+        "pvdf": "PVDF",
+        "pe": "LDPE",  # Generic PE maps to LDPE
+        "polyester": "POLYESTER",
+        "nylon": "NYLON",
+        "cotton": "COTTON",
+        "aluminum": "ALUMINUM",
+        "al": "ALUMINUM",
+        "cellulose": "CELLULOSE",
+        "paper": "CELLULOSE",
+        "carbon": "ACTIVATED_CARBON",
+        "activated carbon": "ACTIVATED_CARBON",
+    }
 
     @classmethod
     def get_by_name(cls, name: str) -> Optional[MaterialProperty]:
-        """Find material by name (case-insensitive)."""
-        name_lower = name.lower()
+        """
+        Find material by name or short code (case-insensitive).
+
+        Supports both full names ("Low-Density Polyethylene") and
+        short codes ("LDPE", "PE", "PP", etc.)
+        """
+        name_lower = name.lower().strip()
+
+        # Check short codes first
+        if name_lower in cls._SHORT_CODES:
+            attr_name = cls._SHORT_CODES[name_lower]
+            return getattr(cls, attr_name, None)
+
+        # Check attribute names directly (e.g., "LDPE" -> cls.LDPE)
+        if hasattr(cls, name.upper()):
+            return getattr(cls, name.upper())
+
+        # Fall back to searching full names
         for mat in cls.get_all():
             if mat.name.lower() == name_lower or name_lower in mat.name.lower():
                 return mat
+
         return None
 
     @classmethod

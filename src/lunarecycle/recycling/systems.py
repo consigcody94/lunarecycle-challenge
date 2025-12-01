@@ -24,6 +24,7 @@ from lunarecycle.recycling.processes import (
 
 class RecyclingTechnology(Enum):
     """Available recycling technologies."""
+
     PYROLYSIS = auto()
     MELT_EXTRUSION = auto()
     PLASMA_ARC = auto()
@@ -35,6 +36,7 @@ class RecyclingTechnology(Enum):
 @dataclass
 class SystemMetrics:
     """Performance metrics for a recycling system."""
+
     total_input_kg: float = 0.0
     total_output_kg: float = 0.0
     total_residue_kg: float = 0.0
@@ -79,6 +81,7 @@ class RecyclingSystem:
     Can route different waste types to appropriate processes
     for optimal recycling efficiency.
     """
+
     name: str = "LunaRecycle System"
     technology: RecyclingTechnology = RecyclingTechnology.HYBRID
     processes: list[RecyclingProcess] = field(default_factory=list)
@@ -159,9 +162,7 @@ class RecyclingSystem:
         return None
 
     def process_waste(
-        self,
-        waste_items: list[WasteItem],
-        masses_kg: list[float]
+        self, waste_items: list[WasteItem], masses_kg: list[float]
     ) -> ProcessingResult:
         """
         Process a batch of waste through the recycling system.
@@ -205,12 +206,14 @@ class RecyclingSystem:
             input_waste_items=waste_items,
             products=all_products,
             waste_residue_kg=total_residue,
-            mass_recovery_rate=sum(p.mass_kg for p in all_products) / total_input if total_input > 0 else 0,
+            mass_recovery_rate=sum(p.mass_kg for p in all_products) / total_input
+            if total_input > 0
+            else 0,
             energy_consumed_kwh=total_energy_consumed,
             energy_recovered_kwh=total_energy_recovered,
             processing_time_hours=total_time,
             toxins_released=toxins,
-            microplastics_generated=microplastics
+            microplastics_generated=microplastics,
         )
 
         # Update system metrics
@@ -275,14 +278,12 @@ class RecyclingSystem:
             "energy_efficiency": f"{self.metrics.energy_efficiency * 100:.1f}%",
             "water_recovered_kg": self.metrics.total_water_recovered_kg,
             "processing_time_hrs": self.metrics.total_processing_time_hrs,
-            "products": {
-                pt.name: mass for pt, mass in self.metrics.products_by_type.items()
-            },
+            "products": {pt.name: mass for pt, mass in self.metrics.products_by_type.items()},
             "quality_score": f"{self.metrics.avg_quality_score:.2f}",
             "safety": {
                 "toxins_released": self.metrics.toxins_released,
-                "microplastics": self.metrics.microplastics_generated
-            }
+                "microplastics": self.metrics.microplastics_generated,
+            },
         }
 
     def print_summary(self):
@@ -293,26 +294,28 @@ class RecyclingSystem:
         print(f"Technology: {summary['technology']}")
         print("=" * 60)
 
-        print(f"\nMASS BALANCE:")
+        print("\nMASS BALANCE:")
         print(f"  Input:      {summary['total_input_kg']:.2f} kg")
         print(f"  Output:     {summary['total_output_kg']:.2f} kg")
         print(f"  Residue:    {summary['total_residue_kg']:.2f} kg")
         print(f"  Efficiency: {summary['mass_efficiency']}")
 
-        print(f"\nENERGY:")
+        print("\nENERGY:")
         print(f"  Net Energy: {summary['net_energy_kwh']:.2f} kWh")
         print(f"  Efficiency: {summary['energy_efficiency']}")
 
-        print(f"\nPRODUCTS:")
-        for product, mass in summary['products'].items():
+        print("\nPRODUCTS:")
+        for product, mass in summary["products"].items():
             print(f"  {product}: {mass:.2f} kg")
 
         print(f"\nWater Recovered: {summary['water_recovered_kg']:.2f} kg")
         print(f"Processing Time: {summary['processing_time_hrs']:.1f} hours")
         print(f"Quality Score: {summary['quality_score']}")
 
-        print(f"\nSAFETY:")
-        print(f"  Toxins Released: {'YES - WARNING' if summary['safety']['toxins_released'] else 'No'}")
+        print("\nSAFETY:")
+        print(
+            f"  Toxins Released: {'YES - WARNING' if summary['safety']['toxins_released'] else 'No'}"
+        )
         print(f"  Microplastics: {'YES - WARNING' if summary['safety']['microplastics'] else 'No'}")
         print("=" * 60)
 

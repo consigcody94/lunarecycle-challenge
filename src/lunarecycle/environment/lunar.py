@@ -12,6 +12,7 @@ from typing import Optional
 
 class Location(Enum):
     """Operating location for recycling system."""
+
     LUNAR_SURFACE = auto()
     LUNAR_HABITAT = auto()
     MARS_SURFACE = auto()
@@ -22,6 +23,7 @@ class Location(Enum):
 @dataclass
 class AtmosphericConditions:
     """Atmospheric parameters for a location."""
+
     pressure_kpa: float
     composition: dict[str, float]  # Gas: percentage
     oxygen_partial_pressure_kpa: float = 21.0
@@ -31,6 +33,7 @@ class AtmosphericConditions:
 @dataclass
 class ThermalConditions:
     """Temperature and thermal parameters."""
+
     min_temp_c: float
     max_temp_c: float
     avg_temp_c: float
@@ -40,6 +43,7 @@ class ThermalConditions:
 @dataclass
 class RadiationEnvironment:
     """Radiation parameters."""
+
     galactic_cosmic_ray_msv_year: float
     solar_particle_event_risk: str  # "low", "medium", "high"
     shielding_available: bool = True
@@ -48,6 +52,7 @@ class RadiationEnvironment:
 @dataclass
 class PowerAvailability:
     """Power system parameters."""
+
     avg_power_kw: float
     peak_power_kw: float
     solar_available_hours_day: float
@@ -57,6 +62,7 @@ class PowerAvailability:
 @dataclass
 class EnvironmentParameters:
     """Complete environment specification."""
+
     location: Location
     gravity_m_s2: float
     atmosphere: AtmosphericConditions
@@ -101,28 +107,28 @@ class LunarEnvironment:
                 pressure_kpa=0.0,  # Vacuum
                 composition={},
                 oxygen_partial_pressure_kpa=0.0,
-                humidity_percent=0.0
+                humidity_percent=0.0,
             ),
             thermal=ThermalConditions(
                 min_temp_c=-173.0,  # Lunar night
-                max_temp_c=127.0,   # Lunar day
+                max_temp_c=127.0,  # Lunar day
                 avg_temp_c=-20.0,
-                thermal_cycling=True
+                thermal_cycling=True,
             ),
             radiation=RadiationEnvironment(
                 galactic_cosmic_ray_msv_year=380.0,
                 solar_particle_event_risk="high",
-                shielding_available=False
+                shielding_available=False,
             ),
             power=PowerAvailability(
                 avg_power_kw=5.0,
                 peak_power_kw=15.0,
                 solar_available_hours_day=12.0,  # Varies with location
-                storage_capacity_kwh=100.0
+                storage_capacity_kwh=100.0,
             ),
             crew_available_hours_day=2.0,  # Limited EVA time
             eva_required=True,
-            resupply_interval_days=180  # ~6 months
+            resupply_interval_days=180,  # ~6 months
         )
 
     @classmethod
@@ -137,35 +143,30 @@ class LunarEnvironment:
             gravity_m_s2=cls.LUNAR_GRAVITY,
             atmosphere=AtmosphericConditions(
                 pressure_kpa=101.3,  # Earth-like
-                composition={
-                    "N2": 78.0,
-                    "O2": 21.0,
-                    "Ar": 0.9,
-                    "CO2": 0.1
-                },
+                composition={"N2": 78.0, "O2": 21.0, "Ar": 0.9, "CO2": 0.1},
                 oxygen_partial_pressure_kpa=21.3,
-                humidity_percent=45.0
+                humidity_percent=45.0,
             ),
             thermal=ThermalConditions(
                 min_temp_c=18.0,
                 max_temp_c=26.0,
                 avg_temp_c=22.0,
-                thermal_cycling=False  # Climate controlled
+                thermal_cycling=False,  # Climate controlled
             ),
             radiation=RadiationEnvironment(
                 galactic_cosmic_ray_msv_year=100.0,  # Reduced by shielding
                 solar_particle_event_risk="medium",
-                shielding_available=True
+                shielding_available=True,
             ),
             power=PowerAvailability(
                 avg_power_kw=10.0,
                 peak_power_kw=25.0,
                 solar_available_hours_day=12.0,
-                storage_capacity_kwh=200.0
+                storage_capacity_kwh=200.0,
             ),
             crew_available_hours_day=4.0,
             eva_required=False,
-            resupply_interval_days=180
+            resupply_interval_days=180,
         )
 
     @classmethod
@@ -216,36 +217,30 @@ class MarsEnvironment:
             gravity_m_s2=cls.MARS_GRAVITY,
             atmosphere=AtmosphericConditions(
                 pressure_kpa=0.636,  # ~0.6% of Earth
-                composition={
-                    "CO2": 95.3,
-                    "N2": 2.7,
-                    "Ar": 1.6,
-                    "O2": 0.13,
-                    "CO": 0.08
-                },
+                composition={"CO2": 95.3, "N2": 2.7, "Ar": 1.6, "O2": 0.13, "CO": 0.08},
                 oxygen_partial_pressure_kpa=0.0008,
-                humidity_percent=0.0
+                humidity_percent=0.0,
             ),
             thermal=ThermalConditions(
                 min_temp_c=-125.0,  # Winter poles
-                max_temp_c=20.0,    # Summer equator
+                max_temp_c=20.0,  # Summer equator
                 avg_temp_c=-60.0,
-                thermal_cycling=True
+                thermal_cycling=True,
             ),
             radiation=RadiationEnvironment(
                 galactic_cosmic_ray_msv_year=250.0,
                 solar_particle_event_risk="medium",
-                shielding_available=False
+                shielding_available=False,
             ),
             power=PowerAvailability(
                 avg_power_kw=3.0,  # Reduced solar flux
                 peak_power_kw=10.0,
                 solar_available_hours_day=12.0,
-                storage_capacity_kwh=150.0
+                storage_capacity_kwh=150.0,
             ),
             crew_available_hours_day=2.0,
             eva_required=True,
-            resupply_interval_days=None  # No resupply possible
+            resupply_interval_days=None,  # No resupply possible
         )
 
     @classmethod
@@ -256,35 +251,27 @@ class MarsEnvironment:
             gravity_m_s2=cls.MARS_GRAVITY,
             atmosphere=AtmosphericConditions(
                 pressure_kpa=101.3,
-                composition={
-                    "N2": 78.0,
-                    "O2": 21.0,
-                    "Ar": 0.9,
-                    "CO2": 0.1
-                },
+                composition={"N2": 78.0, "O2": 21.0, "Ar": 0.9, "CO2": 0.1},
                 oxygen_partial_pressure_kpa=21.3,
-                humidity_percent=40.0
+                humidity_percent=40.0,
             ),
             thermal=ThermalConditions(
-                min_temp_c=18.0,
-                max_temp_c=26.0,
-                avg_temp_c=22.0,
-                thermal_cycling=False
+                min_temp_c=18.0, max_temp_c=26.0, avg_temp_c=22.0, thermal_cycling=False
             ),
             radiation=RadiationEnvironment(
                 galactic_cosmic_ray_msv_year=80.0,
                 solar_particle_event_risk="low",
-                shielding_available=True
+                shielding_available=True,
             ),
             power=PowerAvailability(
                 avg_power_kw=8.0,
                 peak_power_kw=20.0,
                 solar_available_hours_day=12.0,
-                storage_capacity_kwh=300.0
+                storage_capacity_kwh=300.0,
             ),
             crew_available_hours_day=4.0,
             eva_required=False,
-            resupply_interval_days=None
+            resupply_interval_days=None,
         )
 
 
@@ -312,5 +299,4 @@ def get_environment(location: str) -> EnvironmentParameters:
     if location_lower in location_map:
         return location_map[location_lower]()
 
-    raise ValueError(f"Unknown location: {location}. "
-                     f"Valid options: {list(location_map.keys())}")
+    raise ValueError(f"Unknown location: {location}. Valid options: {list(location_map.keys())}")
