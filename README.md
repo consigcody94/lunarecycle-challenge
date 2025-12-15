@@ -1,28 +1,140 @@
-# ARTEMIS-R: Advanced Recycling Technology for Extraterrestrial Material Integration System
+<div align="center">
 
-A complete recycling solution for NASA's LunaRecycle Challenge Phase 2, featuring a hybrid solar-thermal waste processing system with digital twin simulation.
+<!-- Animated Header -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=18,20,22&height=200&section=header&text=🌙%20ARTEMIS-R&fontSize=70&fontColor=fff&animation=twinkling&fontAlignY=35&desc=NASA%20LunaRecycle%20Challenge%20-%20Lunar%20Waste%20Recycling&descAlignY=55&descSize=18"/>
 
-## Challenge Overview
+<br/>
 
-NASA's LunaRecycle Challenge is a $3 million competition focused on developing recycling solutions for lunar missions. This repository contains:
+<!-- Badges Row 1 -->
+<p>
+<a href="https://www.nasa.gov/prizes-challenges-and-crowdsourcing/centennial-challenges/lunarecycle/"><img src="https://img.shields.io/badge/NASA-Challenge-0B3D91?style=for-the-badge&logo=nasa&logoColor=white" alt="NASA"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Prize-$3M-gold?style=for-the-badge" alt="Prize"/></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Phase-2-brightgreen?style=for-the-badge" alt="Phase"/></a>
+</p>
 
-- **Complete System Design** - Hybrid solar-thermal processing architecture
-- **Digital Twin** - Full physics simulation with AI/ML capabilities
-- **Prototype Specifications** - CAD-ready designs and bill of materials
-- **Safety Systems** - PVDF-safe processing with comprehensive interlocks
-- **Submission Documentation** - Ready for NASA Phase 2 submission
+<!-- Badges Row 2 -->
+<p>
+<img src="https://img.shields.io/badge/Recovery_Rate-90%25+-00d4aa?style=flat-square" alt="Recovery"/>
+<img src="https://img.shields.io/badge/Energy_Balance-+44_kWh/week-ff6b6b?style=flat-square" alt="Energy"/>
+<img src="https://img.shields.io/badge/Crew_Time-<30_min/week-3178c6?style=flat-square" alt="Crew"/>
+<img src="https://img.shields.io/badge/Python-3.9+-F7931E?style=flat-square&logo=python&logoColor=white" alt="Python"/>
+<img src="https://img.shields.io/badge/Digital_Twin-Included-9b59b6?style=flat-square" alt="Twin"/>
+</p>
 
-## Key Innovation: PVDF Safety Solution
+<br/>
+
+<!-- Tagline Box -->
+<table>
+<tr>
+<td>
+
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   🌙  ARTEMIS-R: Advanced Recycling for Extraterrestrial Missions           ║
+║                                                                              ║
+║       ♻️   Hybrid solar-thermal waste processing for lunar habitats          ║
+║       🔬  Digital twin with physics simulation + AI/ML capabilities          ║
+║       🛡️   PVDF-safe processing (zero toxic HF release)                      ║
+║       📊  90%+ mass recovery with positive energy balance                    ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+<!-- Quick Links -->
+[**🚀 Quick Start**](#-quick-start) · [**✨ Features**](#-key-innovation) · [**🏗️ Architecture**](#-system-architecture) · [**📊 Performance**](#-performance-metrics) · [**🧪 Testing**](#-testing)
+
+<br/>
+
+</div>
+
+---
+
+<br/>
+
+## 🎯 The Challenge
+
+<table>
+<tr>
+<td width="50%">
+
+### ❌ The Problem
+```
+Lunar missions generate waste:
+├── Food packaging (plastics)
+├── Clothing (synthetic/cotton)
+├── Medical supplies
+├── PVDF foam (releases toxic HF!)
+└── Paper/cardboard
+
+Resupply costs: $1M+/kg to Moon
+Waste = Lost resources
+```
+
+</td>
+<td width="50%">
+
+### ✅ Our Solution
+```
+ARTEMIS-R converts waste to:
+├── 3D printer filament
+├── Radiation shielding tiles
+├── Syngas fuel (4.2 kWh/batch)
+├── Biochar for filtration
+└── Recovered water
+
+All with POSITIVE energy balance!
+```
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+---
+
+<br/>
+
+## 🏆 Key Innovation
+
+### PVDF Safety Solution
 
 The Level 3 Challenge (Zotek F30 PVDF foam) releases toxic HF gas when heated. Our solution:
 
-1. **Cold Mechanical Processing** - Never heat PVDF above 200°C
-2. **Particle Integration** - Incorporate shredded foam into composites
-3. **Low-Temperature Pressing** - Form radiation shielding tiles safely
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PVDF PROCESSING                              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  1. COLD MECHANICAL PROCESSING                                  │
+│     → Never heat PVDF above 200°C                              │
+│                                                                 │
+│  2. PARTICLE INTEGRATION                                        │
+│     → Incorporate shredded foam into composites                │
+│                                                                 │
+│  3. LOW-TEMPERATURE PRESSING                                    │
+│     → Form radiation shielding tiles safely                    │
+│                                                                 │
+│  RESULT: Zero HF release, 100% PVDF utilization                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-**Result:** Zero HF release, 100% PVDF utilization
+<br/>
 
-## System Architecture
+---
+
+<br/>
+
+## 🏗️ System Architecture
 
 ```
                      ┌──────────────────────────────────────┐
@@ -47,66 +159,65 @@ The Level 3 Challenge (Zotek F30 PVDF foam) releases toxic HF gas when heated. O
                      └──────────────────────────────────────┘
 ```
 
-## Performance Metrics
+### Processing Routes
+
+<div align="center">
+
+| Waste Category | Processing Route | Output Products |
+|:---------------|:-----------------|:----------------|
+| Food Packaging Film | Melt Extruder | 3D Filament |
+| Metalized Film | Thermal + Separation | Syngas + Metal |
+| Cotton Clothing | Shredder + Thermal | Fiber + Biochar |
+| Synthetic Clothing | Melt Extruder | Filament |
+| **Zotek F30 Foam (PVDF)** | **Mechanical Only** | **Shield Filler** |
+| Paper/Cardboard | Thermal | Biochar + Syngas |
+| Hygiene Wipes | Thermal | Biochar + Syngas |
+
+</div>
+
+<br/>
+
+---
+
+<br/>
+
+## 📊 Performance Metrics
+
+<div align="center">
 
 | Metric | Value |
-|--------|-------|
-| Mass Recovery Rate | 90%+ |
-| Net Energy Balance | POSITIVE (+44 kWh/week) |
-| Crew Time | <30 min/week |
-| PVDF Safety | Zero thermal processing |
-| Throughput | 8 kg/day |
-| Total System Mass | 223 kg |
+|:-------|:-----:|
+| **Mass Recovery Rate** | 90%+ |
+| **Net Energy Balance** | POSITIVE (+44 kWh/week) |
+| **Crew Time** | <30 min/week |
+| **PVDF Safety** | Zero thermal processing |
+| **Throughput** | 8 kg/day |
+| **Total System Mass** | 223 kg |
 
-## Products Generated
+</div>
 
-- **3D Printer Filament** - For on-demand manufacturing
-- **Radiation Shielding Tiles** - Composites with foam, biochar, regolith
-- **Syngas Fuel** - For energy recovery (4.2 kWh/batch)
-- **Biochar** - For filtration and composites
-- **Recovered Water** - From thermal processing
+<br/>
 
-## Project Structure
+---
 
-```
-lunarecycle-challenge/
-├── src/lunarecycle/
-│   ├── artemis/           # ARTEMIS-R system modules
-│   │   ├── modules.py     # Processing modules (TPR, MEX, MSH, CPR)
-│   │   ├── system.py      # Integrated system coordinator
-│   │   ├── control.py     # Control system & safety interlocks
-│   │   └── digital_twin.py # Physics & AI simulation
-│   ├── dashboard/         # Visualization dashboard
-│   ├── waste/             # Waste stream definitions
-│   ├── recycling/         # Generic recycling processes
-│   ├── environment/       # Lunar environment models
-│   └── simulation/        # Core simulation engine
-├── tests/                 # 109 automated tests
-├── docs/
-│   ├── SYSTEM_DESIGN.md   # Complete technical specification
-│   ├── CAD_SPECIFICATIONS.md # Prototype drawings
-│   ├── BILL_OF_MATERIALS.md  # $32,100 budget breakdown
-│   └── NASA_SUBMISSION.md    # Challenge submission document
-└── README.md
-```
+<br/>
 
-## Installation
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/lunarecycle-challenge.git
+git clone https://github.com/consigcody94/lunarecycle-challenge.git
 cd lunarecycle-challenge
 
 # Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# or: venv\Scripts\activate  # Windows
 
 # Install dependencies
 pip install -e .
 ```
-
-## Quick Start
 
 ### Run the Digital Twin Dashboard
 
@@ -139,23 +250,13 @@ print(f"Mass Recovery: {data['metrics']['mass_recovery']:.1%}")
 print(f"Net Energy: {data['metrics']['net_energy_kwh']:.1f} kWh")
 ```
 
-### Run ARTEMIS System Directly
+<br/>
 
-```python
-from lunarecycle.artemis.system import run_artemis_simulation
+---
 
-# Run 30-day simulation
-system = run_artemis_simulation(crew_size=4, days=30, solar_available=True)
+<br/>
 
-# Get results
-products = system.get_product_summary()
-energy = system.get_energy_summary()
-
-print(f"Total Products: {products['total_kg']:.1f} kg")
-print(f"Net Energy: {energy['net_kwh']:.1f} kWh")
-```
-
-## Testing
+## 🧪 Testing
 
 ```bash
 # Run all tests (109 tests)
@@ -168,47 +269,48 @@ pytest tests/test_artemis.py -v
 pytest tests/ --cov=lunarecycle
 ```
 
-## Waste Categories Supported
+<br/>
 
-| Category | Processing Route | Products |
-|----------|-----------------|----------|
-| Food Packaging Film | Melt Extruder | 3D Filament |
-| Metalized Film | Thermal + Separation | Syngas + Metal |
-| Cotton Clothing | Shredder + Thermal | Fiber + Biochar |
-| Synthetic Clothing | Melt Extruder | Filament |
-| Zotek F30 Foam (PVDF) | **Mechanical Only** | Shield Filler |
-| Paper/Cardboard | Thermal | Biochar + Syngas |
-| Hygiene Wipes | Thermal | Biochar + Syngas |
+---
 
-## Safety Features
+<br/>
 
-- **HF Detection Interlock** - 0.1 ppm triggers immediate shutdown
-- **Over-Temperature Protection** - 500°C max reactor limit
-- **Over-Pressure Relief** - 300 kPa automatic venting
-- **E-Stop System** - 3 locations, global shutdown
-- **Door Interlocks** - Prevents operation with access open
+## 📁 Project Structure
 
-## Digital Twin Capabilities
+```
+lunarecycle-challenge/
+├── src/lunarecycle/
+│   ├── artemis/           # ARTEMIS-R system modules
+│   │   ├── modules.py     # Processing modules (TPR, MEX, MSH, CPR)
+│   │   ├── system.py      # Integrated system coordinator
+│   │   ├── control.py     # Control system & safety interlocks
+│   │   └── digital_twin.py # Physics & AI simulation
+│   ├── dashboard/         # Visualization dashboard
+│   ├── waste/             # Waste stream definitions
+│   ├── recycling/         # Generic recycling processes
+│   ├── environment/       # Lunar environment models
+│   └── simulation/        # Core simulation engine
+├── tests/                 # 109 automated tests
+├── docs/
+│   ├── SYSTEM_DESIGN.md   # Complete technical specification
+│   ├── CAD_SPECIFICATIONS.md # Prototype drawings
+│   ├── BILL_OF_MATERIALS.md  # $32,100 budget breakdown
+│   └── NASA_SUBMISSION.md    # Challenge submission document
+└── README.md
+```
 
-- **Physics Simulation** - Heat transfer, pyrolysis kinetics, mass balance
-- **AI/ML Engine** - Waste classification, anomaly detection, predictive maintenance
-- **Real-Time Monitoring** - 25+ sensor channels
-- **Visualization** - Web dashboard with charts and status displays
-- **State Export** - JSON format for data analysis
+<br/>
 
-## Lunar Adaptation Path
+---
 
-| Earth Prototype | Lunar Version |
-|-----------------|---------------|
-| Grid power | Solar + nuclear backup |
-| Air cooling | Radiative cooling to vacuum |
-| Manual loading | Robotic material handling |
-| 8 kg/day | 20 kg/day throughput |
+<br/>
 
-## Budget Summary
+## 💰 Budget Summary
+
+<div align="center">
 
 | Category | Cost |
-|----------|------|
+|:---------|-----:|
 | Mechanical Components | $8,450 |
 | Thermal System | $5,200 |
 | Electronics & Sensors | $4,100 |
@@ -219,17 +321,65 @@ pytest tests/ --cov=lunarecycle
 | **Contingency (20%)** | $5,350 |
 | **TOTAL** | **$32,100** |
 
-## References
+</div>
 
-- [NASA LunaRecycle Challenge](https://www.nasa.gov/prizes-challenges-and-crowdsourcing/centennial-challenges/lunarecycle/)
-- [LunaRecycle FAQ](https://lunarecyclechallenge.ua.edu/frequently-asked-questions/)
-- [NASA TCPS](https://www.nasa.gov/ames/space-biosciences/bioengineering-branch/the-trash-compaction-processing-system/)
-
-## License
-
-MIT License - See [LICENSE](LICENSE) for details.
+<br/>
 
 ---
 
+<br/>
+
+## 🛡️ Safety Features
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    SAFETY INTERLOCKS                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  🔴  HF Detection Interlock    - 0.1 ppm triggers shutdown     │
+│  🟠  Over-Temperature          - 500°C max reactor limit       │
+│  🟡  Over-Pressure Relief      - 300 kPa automatic venting     │
+│  🟢  E-Stop System             - 3 locations, global shutdown  │
+│  🔵  Door Interlocks           - Prevents unsafe access        │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+<br/>
+
+---
+
+<br/>
+
+## 📄 License
+
+<div align="center">
+
+**MIT License** © LunaRecycle Challenge Team
+
 *Prepared for NASA LunaRecycle Challenge Phase 2*
 *Submission Deadline: January 22, 2026*
+
+</div>
+
+<br/>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=18,20,22&height=100&section=footer"/>
+
+<br/>
+
+**🌙 ARTEMIS-R** — *Turning lunar trash into lunar treasure*
+
+<br/>
+
+*"In space, every gram counts. Waste is just a resource waiting to be reclaimed."*
+
+<br/>
+
+[⬆ Back to Top](#-artemis-r)
+
+</div>
