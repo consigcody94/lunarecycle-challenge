@@ -51,9 +51,38 @@
 <!-- Quick Links -->
 [**🚀 Quick Start**](#-quick-start) · [**✨ Features**](#-key-innovation) · [**🏗️ Architecture**](#-system-architecture) · [**📊 Performance**](#-performance-metrics) · [**🧪 Testing**](#-testing)
 
-<br/>
+<br/><br/>
+
+[![Interactive 3D Digital Twin](https://img.shields.io/badge/3D%20Digital%20Twin-Lunar%20Habitat%20Twin-00d8b4?style=for-the-badge&logo=three.js)](docs/3d_lunar_twin.html)
+[![Vector Engineering Blueprint](https://img.shields.io/badge/Engineering%20Blueprint-ISO%2010241%20Vector-4ff0ff?style=for-the-badge&logo=blueprint)](results/artemis_r_process_flow_mass_balance_blueprint.svg)
 
 </div>
+
+---
+
+## 📐 Technical Blueprints & 1:1 Metric 3D Habitat Twin
+
+### Sheet 1: Integrated Process Flow & Mass Balance Specification
+Comprehensive Process Flow Diagram (PFD) detailing the 4-way classification manifold (IHA-100), solar-thermal pyrolysis reactor (TPR-200, 450–650°C), twin-screw melt extrusion system (MEX-300, 1.75 mm filament), cold mechanical granulation circuit (MSH-400, $T < 200^{\circ}\text{C}$ zero HF release protocol), and 25 MPa hydraulic composite press (CPR-500). Verifies mass conservation ($\eta_{\text{recovery}} = 92.5\% \ge 90\%$) and net positive thermodynamic energy balance ($\Delta E_{\text{net}} = +44.20\text{ kWh/week}$).
+
+<div align="center">
+  <img src="results/artemis_r_process_flow_mass_balance_blueprint.svg" width="100%" alt="ARTEMIS-R Process Flow & Mass Balance Blueprint">
+</div>
+
+### Sheet 2: Physical Module CAD & Lunar Habitat Integration
+1:10 metric scale mechanical engineering drawing of the 223.0 kg 19-inch aerospace rack assembly (Height 1,800 mm, Width 900 mm, Depth 800 mm). Details module mass allotments, vacuum-rated Inconel 718 vessels, D2 tool-steel shredder cutters, titanium tie rods, syngas accumulator buffer, Shackleton crater South Pole solar concentrator interface, and dust electrostatic mitigation seals.
+
+<div align="center">
+  <img src="results/artemis_r_habitat_cad_modules_blueprint.svg" width="100%" alt="ARTEMIS-R Physical Module CAD & Habitat Integration Blueprint">
+</div>
+
+### Interactive 1:1 Metric 3D Lunar Habitat Digital Twin
+Launch the WebGL digital twin locally at [`3d_lunar_twin.html`](3d_lunar_twin.html) or on GitHub Pages at [`docs/3d_lunar_twin.html`](docs/3d_lunar_twin.html):
+- **Lunar South Pole Setting:** High-fidelity Shackleton crater terrain, regolith ground plane, starry void with distant Earth.
+- **1:1 Metric Aerospace Rack:** Precision 3D CAD model with transparent protective glass revealing internal mechanics.
+- **Dynamic Module Animation:** Rotating 300 mm IHA-100 optical turntable, glowing TPR-200 thermal core (550°C), MEX-300 filament winding, counter-rotating MSH-400 shredder shafts, and cycling CPR-500 hydraulic platen.
+- **Interactive Waste Injection:** Live simulation of feeding packaging plastic (melt extrusion trigger) vs Zotek F30 PVDF foam (cold granulator safety response).
+- **Exploded View Mode:** Smooth kinematic separation of all 5 modular processing sub-assemblies.
 
 ---
 
