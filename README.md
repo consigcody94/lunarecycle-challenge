@@ -60,6 +60,15 @@
 
 ---
 
+## Teardown 3D simulator
+
+An interactive 3D teardown of the ARTEMIS-R solar-thermal recycler, built from this repo's own numbers with [elvarofficial/teardown](https://github.com/elvarofficial/teardown). Press a subsystem button to open it up, or leave it alone and it tours itself.
+
+- **[Open the simulator](https://consigcody94.github.io/scientific-anatomy/machines/teardown/artemis-r.html)** (one offline page, runs in the browser)
+- **[Watch the film](https://consigcody94.github.io/scientific-anatomy/machines/teardown/films/artemis-r.mp4)** (720p) · [1080p60 master](https://github.com/consigcody94/scientific-anatomy/releases/download/teardown-v1/artemis-r.mp4)
+
+[![the ARTEMIS-R solar-thermal recycler](https://consigcody94.github.io/scientific-anatomy/machines/teardown/posters/artemis-r.jpg)](https://consigcody94.github.io/scientific-anatomy/machines/teardown/artemis-r.html)
+
 ## 📐 Technical Blueprints & 1:1 Metric 3D Habitat Twin
 
 ### Sheet 1: Integrated Process Flow & Mass Balance Specification
